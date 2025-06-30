@@ -1,0 +1,332 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 15px; /* Padding around the body */
+    display: flex; /* Use flexbox for centering the container */
+    justify-content: center; /* Center container horizontally */
+    background-color: #f0f2f5; /* Light background for the page */
+    color: #333;
+    min-height: 100vh; /* Ensure body takes full viewport height */
+  }
+  
+  .container {
+    display: flex;
+    /* flex-direction: column; /* REMOVE this or change to row (default) */
+    flex-direction: row; /* Explicitly set to row for side-by-side */
+    width: 95%; /* Use more width */
+    max-width: 1800px; /* Allow wider max width for side-by-side */
+    /* min-height: 100vh; /* REMOVE this - height determined by content or flex settings */
+    gap: 20px; /* Space between sections horizontally */
+    align-items: flex-start; /* Align sections to the top */
+  }
+  
+  .section {
+    border: 1px solid #ccc; /* Lighter border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Slightly reduced padding */
+    margin: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #fff; /* White background for sections */
+    flex: 1; /* Allow sections to grow and shrink equally */
+    min-width: 300px; /* Prevent sections from becoming too narrow */
+    /* Add vertical scroll if content overflows */
+    max-height: calc(100vh - 70px); /* Limit height (viewport height minus padding/margins) */
+    overflow-y: auto; /* Add scrollbar if content exceeds max-height */
+  }
+  
+  /* Optional: Adjust flex basis for specific sections if needed */
+  /*
+  .input-section { flex-basis: 25%; }
+  .visualization-section { flex-basis: 45%; }
+  .results-section { flex-basis: 30%; }
+  */
+  
+  
+  .input-section h2,
+  .visualization-section h2,
+  .results-section h2 {
+      margin-top: 0;
+      color: #0056b3; /* Theme color for headings */
+      border-bottom: 2px solid #0056b3;
+      padding-bottom: 10px;
+      text-align: center; /* Center headings */
+  }
+  
+  /* --- Input Section Specifics --- */
+  .input-section label {
+      display: inline-block;
+      margin: 5px 5px 5px 0; /* Adjusted margin */
+      font-weight: bold;
+  }
+  
+  .input-section select,
+  .input-section input[type="number"] {
+      padding: 8px;
+      margin-bottom: 10px; /* Reduced margin */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      width: calc(100% - 20px); /* Make inputs wider within the section */
+      box-sizing: border-box; /* Include padding/border in width */
+  }
+  /* Adjust width for time quantum specifically if needed */
+  #timeQuantumContainer input {
+       width: 80px; /* Smaller specific width */
+       display: inline-block;
+  }
+  #timeQuantumContainer label {
+       margin-right: 10px;
+  }
+  
+  
+  .input-section table {
+      width: 100%;
+      margin-bottom: 15px;
+  }
+  .input-section td input[type="number"] {
+      width: 80%; /* Adjust width of inputs within table cells */
+      padding: 5px;
+  }
+  
+  
+  .input-section button {
+      margin: 10px 5px 0 5px;
+      padding: 10px 15px; /* Adjusted padding */
+      cursor: pointer;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      transition: background-color 0.2s ease;
+      font-size: 0.9em; /* Slightly smaller font */
+  }
+  
+  .input-section button:hover {
+      background-color: #0056b3;
+  }
+  
+  .input-section button:last-of-type { /* Style reset button differently */
+      background-color: #dc3545;
+  }
+  .input-section button:last-of-type:hover {
+      background-color: #c82333;
+  }
+  
+  
+  /* --- Visualization Section Specifics --- */
+  .visualization-section {
+    /* min-height: 350px; /* Remove fixed min-height if using flexbox height constraint */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #visualizationArea {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+  }
+  
+  #ganttChartContainer {
+    width: 100%;
+    /* height: 150px; /* REMOVE fixed height - let content define it */
+    border: 1px solid #aaa;
+    background-color: #f8f9fa;
+    margin: 10px auto 15px auto; /* Adjusted margin */
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border-radius: 4px;
+    min-height: 150px; /* Keep a minimum height */
+  }
+  
+  #ganttChart {
+      position: relative;
+      min-height: 100px; /* Minimum height for process bars */
+      width: 100%; /* JS will adjust */
+  }
+  
+  #timeIndicator {
+    width: 2px;
+    height: 100%;
+    background-color: red;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: left 0.1s linear;
+    z-index: 10;
+  }
+  
+  #timeAxis {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%; /* JS will adjust */
+      height: 30px;
+      border-top: 1px solid #aaa;
+      background-color: #e9ecef;
+      overflow: hidden;
+  }
+  
+  .gantt-bar {
+    position: absolute;
+    height: 30px;
+    border: 1px solid #555;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    overflow: hidden;
+    white-space: nowrap;
+    box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  }
+  
+  .time-marker {
+      position: absolute;
+      bottom: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.8em;
+      color: #555;
+  }
+  .time-marker span {
+      margin-top: 5px;
+  }
+  .time-marker::before {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 8px;
+      background-color: #aaa;
+  }
+  
+  
+  #cpuStatus, #executionTime {
+      font-weight: bold;
+      text-align: center;
+      margin: 5px 0;
+      color: #555;
+  }
+  
+  #readyQueue {
+    margin-top: 10px;
+    border-top: 1px dashed #ccc;
+    padding-top: 10px;
+    text-align: center;
+  }
+  #readyQueue h3 {
+      margin: 0 0 10px 0;
+      color: #0056b3;
+  }
+  
+  #queueContainer {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+    min-height: 40px;
+    padding: 5px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+  }
+  
+  .queue-item {
+    padding: 6px 12px;
+    background-color: #17a2b8;
+    color: white;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 0.9em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    animation: fadeIn 0.3s ease-out;
+    transition: background-color 0.2s ease;
+  }
+  .queue-item:hover {
+      background-color: #138496;
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  /* --- Results Section Specifics --- */
+  .results-section table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0; /* Adjusted margin */
+    font-size: 0.9em; /* Slightly smaller font for table */
+  }
+  
+  .results-section th, .results-section td {
+    border: 1px solid #ddd;
+    padding: 8px; /* Reduced padding */
+    text-align: center;
+  }
+  
+  .results-section th {
+      background-color: #e9ecef;
+      color: #333;
+      font-weight: bold;
+  }
+  
+  .results-section tr:nth-child(even) {
+      background-color: #f8f9fa;
+  }
+  
+  .results-section p {
+      margin-top: 10px;
+      font-size: 1em; /* Slightly smaller font */
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+  }
+  
+  
+  /* --- Responsive adjustments --- */
+  @media (max-width: 1024px) { /* Stack vertically on medium/small screens */
+    .container {
+      flex-direction: column; /* Stack sections vertically */
+      width: 95%;
+      max-width: 800px; /* Adjust max-width for vertical layout */
+      align-items: stretch; /* Stretch sections to full width */
+    }
+    .section {
+        min-width: initial; /* Remove min-width constraint */
+        max-height: none; /* Remove max-height constraint */
+        overflow-y: visible; /* Remove internal scroll */
+    }
+    /* Optional: Adjust section heights if needed in vertical mode */
+    /* .visualization-section { min-height: 400px; } */
+  }
+  
+  @media (max-width: 768px) { /* Further adjustments for small screens */
+      .section {
+          padding: 15px;
+      }
+      .input-section button {
+          padding: 8px 12px;
+          font-size: 0.9em;
+      }
+      .results-section table {
+          font-size: 0.85em; /* Even smaller font for table */
+      }
+      .results-section th, .results-section td {
+          padding: 6px;
+      }
+      #ganttChartContainer {
+          min-height: 120px; /* Reduce min-height */
+      }
+      .gantt-bar {
+          font-size: 0.8em;
+          height: 25px;
+      }
+       /* Adjust Y offset calculation in JS if needed for smaller bars */
+  
+  }

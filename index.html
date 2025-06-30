@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CPU Scheduling Visualization</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <!-- Section 1: Process Input -->
+    <div class="section input-section">
+      <h2>CPU Scheduling Input</h2>
+      <label for="algo">Select Scheduling Algorithm:</label>
+      <select id="algo" onchange="updateInputFields()">
+        <option value="fcfs">FCFS</option>
+        <option value="sjf">SJF (Non-Preemptive)</option>
+        <option value="srtf">SRTF (Preemptive SJF)</option> <!-- Added -->
+        <option value="priority">Priority (Non-Preemptive)</option>
+        <option value="preemptive-priority">Preemptive Priority</option> <!-- Added -->
+        <option value="round-robin">Round Robin</option>
+      </select>
+
+      <div id="timeQuantumContainer" style="display: none;">
+        <label for="timeQuantum">Time Quantum:</label>
+        <input type="number" id="timeQuantum" value="2" min="1"/>
+      </div>
+
+      <table id="processTable">
+        <thead>
+          <tr>
+            <th>Process</th>
+            <th>Arrival Time</th>
+            <th>Burst Time</th>
+            <th id="priorityHeader" style="display: none;">Priority</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <button onclick="addProcessRow()">Add Process</button>
+      <button onclick="addSampleProcesses()">Add Sample Data</button>
+      <button onclick="runSimulation()">Run Simulation</button>
+      <button onclick="resetSimulation()">Reset</button>
+    </div>
+
+    <!-- Section 2: Visualization -->
+    <div class="section visualization-section">
+      <h2>Execution Visualization</h2>
+      <div id="visualizationArea">
+         <div id="ganttChartContainer">
+            <div id="ganttChart"></div>
+            <div id="timeIndicator"></div>
+            <div id="timeAxis"></div>
+         </div>
+         <p id="cpuStatus">CPU Status: Idle</p>
+         <p id="executionTime">Current Time: 0</p>
+         <div id="readyQueue">
+           <h3>Ready Queue</h3>
+           <div id="queueContainer"></div>
+         </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Results -->
+    <div class="section results-section">
+      <h2>Process Execution Summary</h2>
+      <table id="resultsTable">
+        <thead>
+          <tr>
+            <th>Process</th>
+            <th>Arrival</th>
+            <th>Burst</th>
+            <th id="priorityResultHeader" style="display: none;">Priority</th>
+            <th>Completion Time</th>
+            <th>Turnaround Time</th>
+            <th>Waiting Time</th>
+             <!-- Removed Response Time Header -->
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <p id="avgTAT">Average Turnaround Time: 0</p>
+      <p id="avgWT">Average Waiting Time: 0</p>
+      <!-- Removed Avg RT, CPU Util, Throughput paragraphs -->
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
